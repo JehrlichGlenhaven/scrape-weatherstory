@@ -2,8 +2,8 @@ name: Scrape NWS Weather Story Images
 
 on:
   schedule:
-    # 12:05 UTC = 8:05 AM EDT / 7:05 AM EST
-    - cron: '5 12 * * *'
+    # 12:30 UTC = 7:30 AM EST (UTC-5). During EDT this runs at 8:30 AM.
+    - cron: '30 12 * * *'
   workflow_dispatch:
 
 jobs:
