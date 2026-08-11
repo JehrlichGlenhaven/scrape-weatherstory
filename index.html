@@ -494,30 +494,43 @@
 
     // ===== NWS WEATHER STORY IMAGE ROTATION =====
     // Cycles between live radar and NWS Weather Story images every 30 seconds.
-    // Images are scraped daily at 8 AM by a GitHub Actions workflow.
+    // Images are scraped daily at 7:30 AM EST by a GitHub Actions workflow.
     const WX_IMAGES = [
       { src: 'assets/severe-risk.png', label: "Today's Severe Thunderstorm Potential" },
       { src: 'assets/flood-risk.png', label: "Today's Flash Flooding Potential" }
     ];
     let wxImageIndex = 0;
-    let showWxImage = false;
 
     function cycleWxImages() {
-      showWxImage = !showWxImage;
       const overlay = document.getElementById('wxImageOverlay');
       const img = document.getElementById('wxImage');
       const label = document.getElementById('wxImageLabel');
 
-      if (showWxImage) {
-        const wxImg = WX_IMAGES[wxImageIndex];
-        img.src = wxImg.src + '?t=' + Date.now();
+      // If an image is currently shown, fade back to radar and try again next cycle
+      if (overlay.classList.contains('visible')) {
+        overlay.classList.remove('visible');
+        return;
+      }
+
+      // Try to preload the next Weather Story image before showing it
+      const wxImg = WX_IMAGES[wxImageIndex];
+      const preload = new Image();
+
+      preload.onload = () => {
+        img.src = preload.src;
         img.alt = wxImg.label;
         label.textContent = wxImg.label;
         overlay.classList.add('visible');
-        wxImageIndex = (wxImageIndex + 1) % WX_IMAGES.length;
-      } else {
-        overlay.classList.remove('visible');
-      }
+      };
+
+      preload.onerror = () => {
+        // Image missing or broken — stay on radar and try the next image next cycle
+        console.warn('Weather Story image not available, staying on radar:', wxImg.src);
+      };
+
+      // Always advance to the next image for the following cycle
+      wxImageIndex = (wxImageIndex + 1) % WX_IMAGES.length;
+      preload.src = wxImg.src + '?t=' + Date.now();
     }
 
     setInterval(cycleWxImages, 30000);
