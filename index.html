@@ -93,12 +93,19 @@
       right: 0;
       bottom: 0;
       background: #e8e8e8;
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
       z-index: 500;
       padding: 2vh 2vw;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease-in-out;
+    }
+    .wx-image-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
     .wx-image-overlay img {
       max-width: 100%;
@@ -506,10 +513,10 @@
         img.src = wxImg.src + '?t=' + Date.now();
         img.alt = wxImg.label;
         label.textContent = wxImg.label;
-        overlay.style.display = 'flex';
+        overlay.classList.add('visible');
         wxImageIndex = (wxImageIndex + 1) % WX_IMAGES.length;
       } else {
-        overlay.style.display = 'none';
+        overlay.classList.remove('visible');
       }
     }
 
