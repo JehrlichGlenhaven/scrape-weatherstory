@@ -7,7 +7,7 @@ This is a copy of the main GSC Weather Channel with an added feature: it pulls t
 - The live radar still animates as before.
 - Every 30 seconds the radar is replaced by one of the NWS Weather Story images.
 - The rotation order is: **radar → severe risk → radar → flood risk → repeat**.
-- A GitHub Actions workflow automatically downloads fresh images every day at 8:05 AM EDT (12:05 PM UTC).
+- A GitHub Actions workflow automatically downloads fresh images every day at 7:30 AM EST (12:30 PM UTC). During daylight saving time this runs at 8:30 AM EDT.
 
 ## Files to upload to GitHub
 
