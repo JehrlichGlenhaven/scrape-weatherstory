@@ -1,5 +1,5 @@
+import json
 import os
-import re
 import sys
 
 import requests
@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 URL = "https://www.weather.gov/phi/weatherstory"
 OUTPUT_DIR = "assets"
+MANIFEST_FILE = "weatherstory-manifest.json"
 
 
 def download_image(url: str, path: str) -> None:
@@ -28,14 +29,12 @@ def normalize_url(src: str) -> str:
     return src
 
 
-def scrape_tab_images(soup: BeautifulSoup) -> dict:
+def scrape_tab_images(soup: BeautifulSoup) -> list:
     """
-    Scrape the NWS Weather Story tabbed interface.
-    Returns a dict mapping topic keywords to image URLs.
+    Scrape all images from the NWS Weather Story tabbed interface.
+    Returns a list of (label, image_url) tuples in tab order.
     """
-    # Tab navigation labels (e.g. "Today's Severe Thunderstorm Potential")
     nav_links = soup.select(".c-tabs-nav__link")
-    # Tab content panes (each contains one image)
     tab_panes = soup.select(".c-tab")
 
     if len(nav_links) != len(tab_panes):
@@ -43,7 +42,7 @@ def scrape_tab_images(soup: BeautifulSoup) -> dict:
             f"Mismatched tabs: {len(nav_links)} nav links, {len(tab_panes)} panes"
         )
 
-    results = {}
+    results = []
     for nav, pane in zip(nav_links, tab_panes):
         label = nav.get_text(strip=True)
         img = pane.find("img")
@@ -52,7 +51,7 @@ def scrape_tab_images(soup: BeautifulSoup) -> dict:
         src = img.get("src", "").strip()
         if not src:
             continue
-        results[label] = normalize_url(src)
+        results.append((label, normalize_url(src)))
 
     return results
 
@@ -71,28 +70,24 @@ def main() -> int:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1
 
-    print("Found tab images:")
-    for label, url in tab_images.items():
+    if not tab_images:
+        print("ERROR: No Weather Story images found", file=sys.stderr)
+        return 1
+
+    print(f"Found {len(tab_images)} tab image(s):")
+    manifest = []
+    for idx, (label, url) in enumerate(tab_images, start=1):
         print(f"  - {label}: {url}")
+        filename = f"weatherstory-{idx}.png"
+        filepath = os.path.join(OUTPUT_DIR, filename)
+        download_image(url, filepath)
+        manifest.append({"src": f"assets/{filename}", "label": label})
 
-    # Map the scraped labels to our output files
-    severe_url = None
-    flood_url = None
-    for label, url in tab_images.items():
-        if re.search(r"severe\s+thunderstorm", label, re.IGNORECASE):
-            severe_url = url
-        elif re.search(r"flash\s+flooding", label, re.IGNORECASE):
-            flood_url = url
-
-    if not severe_url:
-        print("ERROR: Could not find Severe Thunderstorm Potential image", file=sys.stderr)
-        return 1
-    if not flood_url:
-        print("ERROR: Could not find Flash Flooding Potential image", file=sys.stderr)
-        return 1
-
-    download_image(severe_url, os.path.join(OUTPUT_DIR, "severe-risk.png"))
-    download_image(flood_url, os.path.join(OUTPUT_DIR, "flood-risk.png"))
+    # Save manifest so the frontend knows which images exist and their labels
+    manifest_path = os.path.join(OUTPUT_DIR, MANIFEST_FILE)
+    with open(manifest_path, "w") as f:
+        json.dump(manifest, f, indent=2)
+    print(f"Saved manifest -> {manifest_path}")
 
     return 0
 
