@@ -1,0 +1,35 @@
+name: Scrape NWS Weather Story Images
+
+on:
+  schedule:
+    # 12:30 UTC = 7:30 AM EST (UTC-5). During EDT this runs at 8:30 AM.
+    - cron: '30 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Scrape Weather Story images
+        run: python scripts/scrape_weatherstory.py
+
+      - name: Commit and push updated images
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add assets/
+          git diff --cached --quiet || git commit -m "Update NWS Weather Story images"
+          git push
