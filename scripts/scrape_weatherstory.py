@@ -1,6 +1,8 @@
 import json
 import os
+import shutil
 import sys
+from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -59,6 +61,10 @@ def scrape_tab_images(soup: BeautifulSoup) -> list:
 def main() -> int:
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+    today = datetime.now().strftime("%Y-%m-%d")
+    date_dir = os.path.join(OUTPUT_DIR, today)
+    os.makedirs(date_dir, exist_ok=True)
+
     print(f"Fetching {URL} ...")
     response = requests.get(URL, timeout=30)
     response.raise_for_status()
@@ -79,15 +85,28 @@ def main() -> int:
     for idx, (label, url) in enumerate(tab_images, start=1):
         print(f"  - {label}: {url}")
         filename = f"weatherstory-{idx}.png"
-        filepath = os.path.join(OUTPUT_DIR, filename)
-        download_image(url, filepath)
+
+        # Download to the date-stamped archive folder
+        date_filepath = os.path.join(date_dir, filename)
+        download_image(url, date_filepath)
+
+        # Copy to the root assets folder as the "latest" version for the frontend
+        latest_filepath = os.path.join(OUTPUT_DIR, filename)
+        shutil.copy2(date_filepath, latest_filepath)
+
         manifest.append({"src": f"assets/{filename}", "label": label})
 
-    # Save manifest so the frontend knows which images exist and their labels
-    manifest_path = os.path.join(OUTPUT_DIR, MANIFEST_FILE)
-    with open(manifest_path, "w") as f:
+    # Save manifest in the date-stamped archive folder
+    date_manifest_path = os.path.join(date_dir, MANIFEST_FILE)
+    with open(date_manifest_path, "w") as f:
         json.dump(manifest, f, indent=2)
-    print(f"Saved manifest -> {manifest_path}")
+    print(f"Saved archive manifest -> {date_manifest_path}")
+
+    # Save manifest in the root assets folder so the frontend finds the latest images
+    latest_manifest_path = os.path.join(OUTPUT_DIR, MANIFEST_FILE)
+    with open(latest_manifest_path, "w") as f:
+        json.dump(manifest, f, indent=2)
+    print(f"Saved latest manifest -> {latest_manifest_path}")
 
     return 0
 
