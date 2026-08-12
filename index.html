@@ -493,33 +493,47 @@
     initRadar();
 
     // ===== NWS WEATHER STORY IMAGE ROTATION =====
-    // Cycles between live radar and NWS Weather Story images every 30 seconds.
+    // Cycles between live radar and all NWS Weather Story tab images every 30 seconds.
     // Images are scraped daily at 7:30 AM EST by a GitHub Actions workflow.
-    const WX_IMAGES = [
-      { src: 'assets/severe-risk.png', label: "Today's Severe Thunderstorm Potential" },
-      { src: 'assets/flood-risk.png', label: "Today's Flash Flooding Potential" }
-    ];
+    let wxImages = [];
     let wxImageIndex = 0;
+
+    async function loadWeatherStoryManifest() {
+      try {
+        const res = await fetch('assets/weatherstory-manifest.json?t=' + Date.now());
+        if (!res.ok) throw new Error('Manifest not found');
+        wxImages = await res.json();
+        console.log('Loaded Weather Story images:', wxImages.length);
+      } catch (err) {
+        console.warn('Could not load Weather Story manifest:', err);
+        wxImages = [];
+      }
+    }
 
     function cycleWxImages() {
       const overlay = document.getElementById('wxImageOverlay');
       const img = document.getElementById('wxImage');
       const label = document.getElementById('wxImageLabel');
 
-      // If an image is currently shown, fade back to radar and try again next cycle
+      // If an image is currently shown, fade back to radar
       if (overlay.classList.contains('visible')) {
         overlay.classList.remove('visible');
         return;
       }
 
+      // If no images are available, stay on radar
+      if (!wxImages || wxImages.length === 0) {
+        return;
+      }
+
       // Try to preload the next Weather Story image before showing it
-      const wxImg = WX_IMAGES[wxImageIndex];
+      const wxImg = wxImages[wxImageIndex];
       const preload = new Image();
 
       preload.onload = () => {
         img.src = preload.src;
-        img.alt = wxImg.label;
-        label.textContent = wxImg.label;
+        img.alt = wxImg.label || 'Weather Story';
+        label.textContent = wxImg.label || '';
         overlay.classList.add('visible');
       };
 
@@ -529,10 +543,12 @@
       };
 
       // Always advance to the next image for the following cycle
-      wxImageIndex = (wxImageIndex + 1) % WX_IMAGES.length;
+      wxImageIndex = (wxImageIndex + 1) % wxImages.length;
       preload.src = wxImg.src + '?t=' + Date.now();
     }
 
+    // Load the manifest first, then start cycling
+    loadWeatherStoryManifest();
     setInterval(cycleWxImages, 30000);
 
     // Auto-reload the entire page every 10 minutes

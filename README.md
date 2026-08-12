@@ -1,12 +1,13 @@
 # GSC Weather Channel — NWS Weather Story Edition
 
-This is a copy of the main GSC Weather Channel with an added feature: it pulls the daily **Severe Thunderstorm Potential** and **Flash Flooding Potential** images from the Philadelphia NWS Weather Story page and rotates them with the live radar.
+This is a copy of the main GSC Weather Channel with an added feature: it pulls **all images** from the Philadelphia NWS Weather Story page tabs and rotates them with the live radar.
 
 ## What's different from the main version
 
 - The live radar still animates as before.
 - Every 30 seconds the radar is replaced by one of the NWS Weather Story images.
-- The rotation order is: **radar → severe risk → radar → flood risk → repeat**.
+- It grabs **every image under every tab** for that day, not just severe/flood.
+- The rotation order is: **radar → image 1 → radar → image 2 → radar → image 3 → repeat**.
 - A GitHub Actions workflow automatically downloads fresh images every day at 7:30 AM EST (12:30 PM UTC). During daylight saving time this runs at 8:30 AM EDT.
 
 ## Files to upload to GitHub
