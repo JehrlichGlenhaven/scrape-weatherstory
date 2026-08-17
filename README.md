@@ -8,7 +8,7 @@ This is a copy of the main GSC Weather Channel with an added feature: it pulls *
 - Every 30 seconds the radar is replaced by one of the NWS Weather Story images.
 - It grabs **every image under every tab** for that day, not just severe/flood.
 - The rotation order is: **radar → image 1 → radar → image 2 → radar → image 3 → repeat**.
-- A GitHub Actions workflow automatically downloads fresh images every day at 6:45 AM local Eastern Time (10:45 AM UTC). During standard time this is 5:45 AM EST; during daylight saving time this is 6:45 AM EDT.
+- A GitHub Actions workflow automatically downloads fresh images every hour from 10:00 UTC to 22:00 UTC (6 AM - 6 PM Eastern Time).
 - Images are saved in a date-stamped folder (`assets/YYYY-MM-DD/`) for archiving, and also copied to `assets/` as the latest version for the live site.
 
 ## Files to upload to GitHub
