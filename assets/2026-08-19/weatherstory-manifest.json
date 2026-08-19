@@ -10,5 +10,9 @@
   {
     "src": "assets/weatherstory-3.png",
     "label": "Thursday's Severe Weather Outlook"
+  },
+  {
+    "src": "assets/weatherstory-4.png",
+    "label": "Flood Watch Thursday"
   }
 ]
