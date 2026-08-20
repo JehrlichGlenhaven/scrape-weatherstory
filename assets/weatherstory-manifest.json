@@ -1,11 +1,11 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Weekly Outlook"
+    "label": "Today's Flash Flood Threat"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Today's Flash Flood Threat"
+    "label": "Flood Watch Today"
   },
   {
     "src": "assets/weatherstory-3.png",
@@ -13,6 +13,10 @@
   },
   {
     "src": "assets/weatherstory-4.png",
-    "label": "Flood Watch Today"
+    "label": "Increased Tornado Threat Today"
+  },
+  {
+    "src": "assets/weatherstory-5.png",
+    "label": "Weekly Outlook"
   }
 ]
