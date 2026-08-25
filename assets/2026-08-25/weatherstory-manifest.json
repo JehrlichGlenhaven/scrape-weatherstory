@@ -1,7 +1,7 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "3 Day Outlook"
+    "label": "Mid-Week Outlook"
   },
   {
     "src": "assets/weatherstory-2.png",
@@ -9,6 +9,6 @@
   },
   {
     "src": "assets/weatherstory-3.png",
-    "label": "Thursday Flash flood Outlook"
+    "label": "Thursday's Flash Flood Outlook"
   }
 ]
