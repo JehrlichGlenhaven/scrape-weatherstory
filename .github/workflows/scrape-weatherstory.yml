@@ -6,6 +6,7 @@ on:
     # Two off-peak slots per hour: GitHub scheduled runs are best-effort and
     # minute-0 jobs are frequently delayed or dropped under load.
     - cron: '11,43 10-22 * * *'
+    
   workflow_dispatch:
 
 jobs:
