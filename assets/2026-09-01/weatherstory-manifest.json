@@ -1,11 +1,11 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Today's Severe Thunderstorm Potential"
+    "label": "Current radar"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Heat Index Forecast through Thursday"
+    "label": "Tue Severe Storm Risk"
   },
   {
     "src": "assets/weatherstory-3.png",
