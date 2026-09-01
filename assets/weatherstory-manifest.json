@@ -1,18 +1,22 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Tuesday's Severe Thunderstorm Potential"
+    "label": "Today's Severe Thunderstorm Potential"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Wednesday's Severe Storm Outlook"
+    "label": "Heat Index Forecast through Thursday"
   },
   {
     "src": "assets/weatherstory-3.png",
-    "label": "Thursday's Severe Storm Outlook"
+    "label": "Wednesday's Severe Storm Potential"
   },
   {
     "src": "assets/weatherstory-4.png",
-    "label": "Flash Flooding Threat Tuesday & Wednesday"
+    "label": "Thursday's Severe Storm Potential"
+  },
+  {
+    "src": "assets/weatherstory-5.png",
+    "label": "Summary of Weather Hazards This Week"
   }
 ]
