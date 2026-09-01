@@ -1,0 +1,18 @@
+[
+  {
+    "src": "assets/weatherstory-1.png",
+    "label": "Tuesday's Severe Thunderstorm Potential"
+  },
+  {
+    "src": "assets/weatherstory-2.png",
+    "label": "Wednesday's Severe Storm Outlook"
+  },
+  {
+    "src": "assets/weatherstory-3.png",
+    "label": "Thursday's Severe Storm Outlook"
+  },
+  {
+    "src": "assets/weatherstory-4.png",
+    "label": "Flash Flooding Threat Tuesday & Wednesday"
+  }
+]
