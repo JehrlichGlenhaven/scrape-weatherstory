@@ -385,6 +385,10 @@
     let currentCityIndex = 0;
     let weatherData = {};
 
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     async function fetchWeather(city) {
       const url = 'https://api.open-meteo.com/v1/forecast' +
         '?latitude=' + city.lat +
@@ -395,9 +399,18 @@
         '&wind_speed_unit=mph' +
         '&precipitation_unit=inch' +
         '&timezone=auto';
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Weather API error for ' + city.name);
-      return await res.json();
+      // Open-Meteo occasionally returns a non-JSON error body or a failed
+      // response; retry a few times before giving up on the city.
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error('Weather API error for ' + city.name + ' (HTTP ' + res.status + ')');
+          return await res.json();
+        } catch (e) {
+          if (attempt === 3) throw e;
+          await sleep(3000 * attempt);
+        }
+      }
     }
 
     async function loadAll() {
@@ -412,8 +425,13 @@
       }
 
       if (failed.length === cities.length) {
-        document.getElementById('currentPanel').innerHTML =
-          '<div class="error loading">Could not load weather data.<br>Check internet connection.</div>';
+        // Keep any previously loaded data on screen; only show the error if
+        // we have nothing at all. Retry automatically in 30 seconds.
+        if (Object.keys(weatherData).length === 0) {
+          document.getElementById('currentPanel').innerHTML =
+            '<div class="error loading">Could not load weather data.<br>Retrying shortly...</div>';
+        }
+        setTimeout(loadAll, 30000);
         return;
       }
 
