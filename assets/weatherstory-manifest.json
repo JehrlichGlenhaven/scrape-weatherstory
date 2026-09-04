@@ -1,6 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Today's Severe Weather Potential"
+    "label": "Tonight's Severe Weather Potential"
+  },
+  {
+    "src": "assets/weatherstory-2.png",
+    "label": "Holiday Weather Forecast Summary"
   }
 ]
