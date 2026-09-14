@@ -1,10 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Seasonably Cool to Start the Week"
+    "label": "Tonight's Forecast"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Monday Forecast"
+    "label": "Seasonably Cool to Start the Week"
   }
 ]
