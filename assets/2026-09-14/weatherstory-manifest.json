@@ -2,5 +2,9 @@
   {
     "src": "assets/weatherstory-1.png",
     "label": "Seasonably Cool to Start the Week"
+  },
+  {
+    "src": "assets/weatherstory-2.png",
+    "label": "Monday Forecast"
   }
 ]
