@@ -6,5 +6,9 @@
   {
     "src": "assets/weatherstory-2.png",
     "label": "7 Day Outlook"
+  },
+  {
+    "src": "assets/weatherstory-3.png",
+    "label": "Flash Flooding Risk Sunday"
   }
 ]
