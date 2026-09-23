@@ -17,7 +17,7 @@
     }
     .container {
       display: grid;
-      grid-template-rows: 8vh 1fr 16vh;
+      grid-template-rows: 11vh 1fr 23vh;
       height: 100vh;
       width: 100vw;
       min-height: 480px;
@@ -32,7 +32,7 @@
       gap: 1vw;
     }
     .logo {
-      height: clamp(45px, 6vh, 70px);
+      height: clamp(55px, 8.5vh, 95px);
       width: auto;
       grid-column: 1;
       justify-self: start;
@@ -40,10 +40,90 @@
     .header-title {
       grid-column: 2;
       justify-self: center;
-      font-size: clamp(1.1rem, 2.2vw, 1.8rem);
-      font-weight: 300;
+      font-size: clamp(1.4rem, 2.8vw, 2.5rem);
+      font-weight: 700;
       letter-spacing: 1px;
     }
+    /* ===== NWS ALERT BANNER =====
+       Hidden unless .has-alerts is set on .container (the JS toggles it when
+       the NWS feed returns active alerts for any city). All geometry is
+       fixed so alerts can never shift the rest of the page. */
+    .container.has-alerts {
+      grid-template-rows: 11vh 7vh 1fr 23vh;
+    }
+    .alert-bar {
+      display: none;
+      align-items: center;
+      gap: 1.2vw;
+      padding: 0.6vh 1.5vw;
+      height: 7vh;
+      overflow: hidden;
+      transition: background-color 0.5s, color 0.5s;
+      animation: slideDown 0.4s ease-out;
+    }
+    .container.has-alerts .alert-bar { display: flex; }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    .alert-bar.warning  { background: #c62828; color: #fff; }
+    .alert-bar.watch    { background: #ef6c00; color: #fff; }
+    .alert-bar.advisory { background: #f9a825; color: #1a1a1a; }
+    .alert-bar.other    { background: #1565c0; color: #fff; }
+    .alert-badge {
+      font-weight: 800;
+      font-size: clamp(0.9rem, 1.4vw, 1.4rem);
+      letter-spacing: 2px;
+      padding: 0.6vh 1vw;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.35);
+      color: #fff;
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-width: 11ch;
+      text-align: center;
+    }
+    .alert-body { flex: 1; min-width: 0; }
+    .alert-event {
+      font-weight: 700;
+      font-size: clamp(0.9rem, 1.3vw, 1.2rem);
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0.85;
+    }
+    .alert-headline {
+      font-size: clamp(1.05rem, 1.7vw, 1.6rem);
+      font-weight: 600;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .alert-headline span {
+      display: inline-block;
+      padding-left: 100%;
+      /* One pass across the screen = 25s; each alert gets 2 full passes
+         before the rotation advances (driven by animationend in the JS). */
+      animation: crawl 25s linear 2;
+    }
+    @keyframes crawl {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .alert-meta {
+      text-align: right;
+      font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+      line-height: 1.25;
+      white-space: nowrap;
+      flex-shrink: 0;
+      width: 24vw;
+    }
+    .alert-meta > div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .alert-count { font-weight: 700; }
     .main {
       display: grid;
       grid-template-columns: minmax(280px, 26vw) 1fr;
@@ -180,7 +260,7 @@
     }
     .forecast-city {
       font-weight: 700;
-      font-size: clamp(0.75rem, 1.05vw, 1.05rem);
+      font-size: clamp(0.85rem, 1.2vw, 1.25rem);
       margin-bottom: 0.8vh;
       color: #fff;
       line-height: 1.2;
@@ -196,7 +276,7 @@
       min-height: 0;
     }
     .forecast-day {
-      font-size: clamp(0.6rem, 0.8vw, 0.8rem);
+      font-size: clamp(0.7rem, 0.95vw, 1rem);
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -204,8 +284,8 @@
       min-width: 0;
     }
     .forecast-day-name { color: #88c0ff; margin-bottom: 0.3vh; }
-    .forecast-icon { font-size: clamp(1rem, 1.6vw, 1.5rem); margin: 0.3vh 0; }
-    .forecast-temps { font-size: clamp(0.6rem, 0.8vw, 0.8rem); line-height: 1.25; }
+    .forecast-icon { font-size: clamp(1.3rem, 2.1vw, 2.1rem); margin: 0.3vh 0; }
+    .forecast-temps { font-size: clamp(0.7rem, 0.95vw, 1rem); line-height: 1.25; }
     .forecast-high { font-weight: 700; }
     .forecast-low { color: #88c0ff; }
     .loading { color: #88c0ff; font-style: italic; font-size: clamp(1rem, 1.3vw, 1.3rem); }
@@ -224,6 +304,18 @@
       <img src="logo.png" alt="Glenhaven Snow Company" class="logo">
       <div class="header-title">GSC Weather Channel</div>
     </header>
+    <div class="alert-bar" id="alertBar">
+      <div class="alert-badge" id="alertBadge">ALERT</div>
+      <div class="alert-body">
+        <div class="alert-event" id="alertEvent"></div>
+        <div class="alert-headline"><span id="alertHeadline"></span></div>
+      </div>
+      <div class="alert-meta">
+        <div id="alertArea"></div>
+        <div id="alertExpires"></div>
+        <div class="alert-count" id="alertCount"></div>
+      </div>
+    </div>
     <main class="main">
       <aside class="sidebar" id="currentPanel">
         <div class="loading">Loading weather data...</div>
@@ -568,6 +660,98 @@
     // Load the manifest first, then start cycling
     loadWeatherStoryManifest();
     setInterval(cycleWxImages, 30000);
+
+    // ===== NWS ALERTS BANNER =====
+    // Queries the NWS active-alerts feed for every city, dedupes by alert ID,
+    // and shows the most severe first. Each alert's headline crawls across the
+    // screen twice before the next alert appears. The banner stays hidden
+    // when no alerts are active. Feed is re-checked every 5 minutes.
+    let activeAlerts = [];
+    let alertIndex = 0;
+
+    function classifyAlert(event) {
+      const e = (event || '').toLowerCase();
+      if (e.includes('warning'))  return { cls: 'warning',  badge: 'WARNING' };
+      if (e.includes('watch'))    return { cls: 'watch',    badge: 'WATCH' };
+      if (e.includes('advisory')) return { cls: 'advisory', badge: 'ADVISORY' };
+      return { cls: 'other', badge: 'ALERT' };
+    }
+
+    const alertSeverityRank = { Extreme: 0, Severe: 1, Moderate: 2, Minor: 3, Unknown: 4 };
+
+    async function fetchActiveAlerts() {
+      const seen = new Map();
+      await Promise.all(cities.map(async (city) => {
+        try {
+          const res = await fetch('https://api.weather.gov/alerts/active?point=' + city.lat + ',' + city.lon);
+          if (!res.ok) return;
+          const data = await res.json();
+          for (const f of (data.features || [])) {
+            const p = f.properties;
+            if (!p || !p.id || seen.has(p.id)) continue;
+            seen.set(p.id, {
+              event: p.event,
+              severity: p.severity || 'Unknown',
+              headline: p.headline || '',
+              area: (p.areaDesc || '').replace(/;/g, ','),
+              expires: p.expires
+            });
+          }
+        } catch (e) { /* a failed city just contributes no alerts */ }
+      }));
+      return [...seen.values()].sort((a, b) =>
+        (alertSeverityRank[a.severity] ?? 4) - (alertSeverityRank[b.severity] ?? 4));
+    }
+
+    function showAlert(i) {
+      const a = activeAlerts[i];
+      if (!a) return;
+      const { cls, badge } = classifyAlert(a.event);
+      document.querySelector('.container').classList.add('has-alerts');
+      const bar = document.getElementById('alertBar');
+      bar.style.opacity = 0;
+      setTimeout(() => {
+        bar.className = 'alert-bar ' + cls;
+        document.getElementById('alertBadge').textContent = badge;
+        document.getElementById('alertEvent').textContent = a.event;
+        const h = document.getElementById('alertHeadline');
+        h.textContent = a.headline;
+        // Restart the crawl so each alert gets its two full passes
+        h.style.animation = 'none';
+        void h.offsetWidth;
+        h.style.animation = '';
+        document.getElementById('alertArea').textContent = a.area;
+        document.getElementById('alertExpires').textContent = a.expires
+          ? 'Expires: ' + new Date(a.expires).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' })
+          : '';
+        document.getElementById('alertCount').textContent =
+          activeAlerts.length > 1 ? (i + 1) + ' of ' + activeAlerts.length : '';
+        bar.style.transition = 'opacity 0.4s';
+        bar.style.opacity = 1;
+      }, 400);
+    }
+
+    async function refreshAlerts() {
+      activeAlerts = await fetchActiveAlerts();
+      if (activeAlerts.length === 0) {
+        document.querySelector('.container').classList.remove('has-alerts');
+        return;
+      }
+      alertIndex = 0;
+      showAlert(0);
+    }
+
+    refreshAlerts();
+    // Advance to the next alert only after the current headline has crawled
+    // across the screen twice — the CSS animation runs 2 iterations, and
+    // animationend fires when the second pass completes.
+    document.getElementById('alertHeadline').addEventListener('animationend', () => {
+      if (activeAlerts.length === 0) return;
+      alertIndex = (alertIndex + 1) % activeAlerts.length;
+      showAlert(alertIndex);
+    });
+    // Re-check the NWS feed every 5 minutes
+    setInterval(refreshAlerts, 300000);
 
     // Auto-reload the entire page every 10 minutes
     setTimeout(() => {

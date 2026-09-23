@@ -9,6 +9,8 @@ This is a copy of the main GSC Weather Channel with an added feature: it pulls *
 - It grabs **every image under every tab** for that day, not just severe/flood.
 - The rotation order is: **radar → image 1 → radar → image 2 → radar → image 3 → repeat**.
 - A GitHub Actions workflow automatically downloads fresh images every hour from 10:00 UTC to 22:00 UTC (6 AM - 6 PM Eastern Time).
+- When any NWS alert (watch, warning, advisory, or statement) covers one of the six cities, a color-coded banner appears under the header and cycles through the active alerts, most severe first. Each alert's headline crawls across the screen twice before the next one appears. Data comes from api.weather.gov, refreshes every 5 minutes, and the banner hides itself when nothing is active.
+- The header and 7-day forecast ticker were enlarged (11vh and 23vh of screen height); the radar/current-conditions area is slightly smaller to make room.
 - Images are saved in a date-stamped folder (`assets/YYYY-MM-DD/`) for archiving, and also copied to `assets/` as the latest version for the live site.
 
 ## Files to upload to GitHub
