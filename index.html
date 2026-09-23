@@ -84,17 +84,8 @@
       text-align: center;
     }
     .alert-body { flex: 1; min-width: 0; }
-    .alert-event {
-      font-weight: 700;
-      font-size: clamp(0.9rem, 1.3vw, 1.2rem);
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      opacity: 0.85;
-    }
     .alert-headline {
-      font-size: clamp(1.05rem, 1.7vw, 1.6rem);
+      font-size: clamp(1.4rem, 2.3vw, 2.2rem);
       font-weight: 600;
       line-height: 1.2;
       white-space: nowrap;
@@ -172,13 +163,11 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: #e8e8e8;
+      background: #00152e;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
       z-index: 500;
-      padding: 2vh 2vw;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.8s ease-in-out;
@@ -189,17 +178,10 @@
     }
     .wx-image-overlay img {
       max-width: 100%;
-      max-height: 90%;
+      max-height: 100%;
       object-fit: contain;
       border: 3px solid #001f3f;
       background: #fff;
-    }
-    .wx-image-label {
-      margin-top: 1vh;
-      color: #001f3f;
-      font-size: clamp(1rem, 1.8vw, 1.6rem);
-      font-weight: 700;
-      text-align: center;
     }
     .map-label {
       position: absolute;
@@ -285,7 +267,7 @@
     }
     .forecast-day-name { color: #88c0ff; margin-bottom: 0.3vh; }
     .forecast-icon { font-size: clamp(1.3rem, 2.1vw, 2.1rem); margin: 0.3vh 0; }
-    .forecast-temps { font-size: clamp(0.7rem, 0.95vw, 1rem); line-height: 1.25; }
+    .forecast-temps { font-size: clamp(0.9rem, 1.3vw, 1.4rem); line-height: 1.25; }
     .forecast-high { font-weight: 700; }
     .forecast-low { color: #88c0ff; }
     .loading { color: #88c0ff; font-style: italic; font-size: clamp(1rem, 1.3vw, 1.3rem); }
@@ -307,7 +289,6 @@
     <div class="alert-bar" id="alertBar">
       <div class="alert-badge" id="alertBadge">ALERT</div>
       <div class="alert-body">
-        <div class="alert-event" id="alertEvent"></div>
         <div class="alert-headline"><span id="alertHeadline"></span></div>
       </div>
       <div class="alert-meta">
@@ -325,7 +306,6 @@
         <div id="radarMap"></div>
         <div class="wx-image-overlay" id="wxImageOverlay">
           <img id="wxImage" src="" alt="Weather Story">
-          <div class="wx-image-label" id="wxImageLabel"></div>
         </div>
         <div class="radar-time" id="radarTime">Loading radar...</div>
         <div class="update-time" id="updateTime">Updated: --</div>
@@ -623,7 +603,6 @@
     function cycleWxImages() {
       const overlay = document.getElementById('wxImageOverlay');
       const img = document.getElementById('wxImage');
-      const label = document.getElementById('wxImageLabel');
 
       // If an image is currently shown, fade back to radar
       if (overlay.classList.contains('visible')) {
@@ -643,7 +622,6 @@
       preload.onload = () => {
         img.src = preload.src;
         img.alt = wxImg.label || 'Weather Story';
-        label.textContent = wxImg.label || '';
         overlay.classList.add('visible');
       };
 
@@ -713,7 +691,6 @@
       setTimeout(() => {
         bar.className = 'alert-bar ' + cls;
         document.getElementById('alertBadge').textContent = badge;
-        document.getElementById('alertEvent').textContent = a.event;
         const h = document.getElementById('alertHeadline');
         h.textContent = a.headline;
         // Restart the crawl so each alert gets its two full passes
