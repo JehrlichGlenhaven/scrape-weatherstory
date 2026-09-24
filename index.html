@@ -553,8 +553,8 @@
               '<div class="forecast-day-name">' + dayName + '</div>' +
               '<div class="forecast-icon">' + info.icon + '</div>' +
               '<div class="forecast-temps">' +
-                '<div class="forecast-high">' + Math.round(days.temperature_2m_max[i]) + '°</div>' +
-                '<div class="forecast-low">' + Math.round(days.temperature_2m_min[i]) + '°</div>' +
+                '<div class="forecast-high">' + Math.round(days.temperature_2m_max[i]) + '</div>' +
+                '<div class="forecast-low">' + Math.round(days.temperature_2m_min[i]) + '</div>' +
               '</div>' +
             '</div>';
         }
@@ -595,8 +595,12 @@
         wxImages = await res.json();
         console.log('Loaded Weather Story images:', wxImages.length);
       } catch (err) {
-        console.warn('Could not load Weather Story manifest:', err);
-        wxImages = [];
+        // Browsers block fetch() of local files when the page is opened via
+        // file:// — fall back to the default image so the rotation still runs.
+        // On the hosted site (or the local server from the .bat) the fetch
+        // above succeeds and this fallback never runs.
+        console.warn('Could not load Weather Story manifest, using fallback:', err);
+        wxImages = [{ src: 'assets/weatherstory-1.png', label: 'Weather Story' }];
       }
     }
 
