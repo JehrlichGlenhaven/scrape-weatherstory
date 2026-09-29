@@ -44,6 +44,23 @@
       font-weight: 700;
       letter-spacing: 1px;
     }
+    .header-clock {
+      grid-column: 3;
+      justify-self: end;
+      text-align: right;
+      line-height: 1.25;
+    }
+    .header-clock .clock-date {
+      font-size: clamp(0.85rem, 1.3vw, 1.15rem);
+      font-weight: 600;
+      color: #9fc4e8;
+      letter-spacing: 0.5px;
+    }
+    .header-clock .clock-time {
+      font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
     /* ===== NWS ALERT BANNER =====
        Hidden unless .has-alerts is set on .container (the JS toggles it when
        the NWS feed returns active alerts for any city). All geometry is
@@ -285,6 +302,10 @@
     <header class="header">
       <img src="logo.png" alt="Glenhaven Snow Company" class="logo">
       <div class="header-title">GSC Weather Channel</div>
+      <div class="header-clock" id="headerClock">
+        <div class="clock-date" id="clockDate"></div>
+        <div class="clock-time" id="clockTime"></div>
+      </div>
     </header>
     <div class="alert-bar" id="alertBar">
       <div class="alert-badge" id="alertBadge">ALERT</div>
@@ -574,6 +595,17 @@
       currentCityIndex = (currentCityIndex + 1) % cities.length;
       renderCurrent();
     }, 10000);
+
+    // Header clock: current day/date and time, updated every second
+    function updateHeaderClock() {
+      const now = new Date();
+      document.getElementById('clockDate').textContent =
+        now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      document.getElementById('clockTime').textContent =
+        now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+    }
+    updateHeaderClock();
+    setInterval(updateHeaderClock, 1000);
 
     // Initial load and periodic refresh every 10 minutes
     loadAll();
