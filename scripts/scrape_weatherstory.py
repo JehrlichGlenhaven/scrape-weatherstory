@@ -5,7 +5,23 @@ import sys
 from datetime import datetime
 
 import requests
+import sentry_sdk
 from bs4 import BeautifulSoup
+
+sentry_sdk.init(
+    dsn="https://0bbf4139780919b0d9a62b4db137caa0@o4512187179859968.ingest.us.sentry.io/4512203404410880",
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+    # Enable sending logs to Sentry
+    enable_logs=True,
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+    # Set profile_session_sample_rate to 1.0 to profile 100%
+    # of profile sessions.
+    profile_session_sample_rate=1.0,
+)
 
 URL = "https://www.weather.gov/phi/weatherstory"
 OUTPUT_DIR = "assets"

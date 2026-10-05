@@ -23,7 +23,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4
+        run: pip install requests beautifulsoup4 sentry-sdk
 
       - name: Scrape Weather Story images
         run: python scripts/scrape_weatherstory.py
