@@ -1,18 +1,14 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Tonight and Saturday."
-  },
-  {
-    "src": "assets/weatherstory-2.png",
     "label": "Flash Flood Risk Sunday"
   },
   {
-    "src": "assets/weatherstory-3.png",
+    "src": "assets/weatherstory-2.png",
     "label": "Severe Storm Risk Sunday"
   },
   {
-    "src": "assets/weatherstory-4.png",
+    "src": "assets/weatherstory-3.png",
     "label": "Minor Coastal Flood Threat - Sunday/Monday"
   }
 ]
