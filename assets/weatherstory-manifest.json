@@ -1,14 +1,6 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Flash Flood Risk Sunday"
-  },
-  {
-    "src": "assets/weatherstory-2.png",
     "label": "The Week Ahead"
-  },
-  {
-    "src": "assets/weatherstory-3.png",
-    "label": "Minor Coastal Flooding Expected Monday Morning"
   }
 ]
