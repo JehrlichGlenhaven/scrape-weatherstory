@@ -1,6 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "5-Day Outlook"
+    "label": "3-Day Forecast Summary"
+  },
+  {
+    "src": "assets/weatherstory-2.png",
+    "label": "Friday's Severe Weather Outlook"
   }
 ]
