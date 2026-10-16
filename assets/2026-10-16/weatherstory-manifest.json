@@ -1,10 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Friday's Severe Weather Outlook"
+    "label": "Today's Severe Weather Outlook"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Friday Night Through Saturday Night Forecast"
+    "label": "Tonight Through Saturday Night Forecast"
   }
 ]
