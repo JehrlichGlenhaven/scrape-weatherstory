@@ -1,10 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Forecast Today and Tonight"
+    "label": "Tonight's Forecast"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Minor Coastal Flooding Expected starting Monday"
+    "label": "Multiple Rounds of Coastal Flooding this week"
   }
 ]
