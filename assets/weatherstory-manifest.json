@@ -1,10 +1,14 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Seasonable and Dry Weather Ahead"
+    "label": "Freeze/Frost Conditions Tonight and Early Saturday"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Minor Coastal Flooding Through Friday Evening"
+    "label": "Minor Coastal Flooding Through This Evening"
+  },
+  {
+    "src": "assets/weatherstory-3.png",
+    "label": "3-Day Forecast Summary"
   }
 ]
