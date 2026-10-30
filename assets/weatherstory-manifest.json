@@ -6,5 +6,9 @@
   {
     "src": "assets/weatherstory-2.png",
     "label": "3-Day Forecast Summary"
+  },
+  {
+    "src": "assets/weatherstory-3.png",
+    "label": "Time to Fall Back This weekend!"
   }
 ]
