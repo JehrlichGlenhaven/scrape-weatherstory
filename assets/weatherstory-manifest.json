@@ -1,14 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Tonight's Forecast"
+    "label": "Today's Forecast"
   },
   {
     "src": "assets/weatherstory-2.png",
     "label": "3-Day Forecast Summary"
-  },
-  {
-    "src": "assets/weatherstory-3.png",
-    "label": "Time to Fall Back Tonight!"
   }
 ]
