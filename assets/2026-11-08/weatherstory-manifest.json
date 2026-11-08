@@ -2,5 +2,9 @@
   {
     "src": "assets/weatherstory-1.png",
     "label": "Dry and Seasonable through Midweek"
+  },
+  {
+    "src": "assets/weatherstory-2.png",
+    "label": "Rain & Snow Potential Late Week"
   }
 ]
