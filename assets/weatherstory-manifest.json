@@ -1,6 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Dry and Seasonable through Wednesday"
+    "label": "Weekly Outlook"
+  },
+  {
+    "src": "assets/weatherstory-2.png",
+    "label": "Late Week System Bringing Mainly Rain"
   }
 ]
