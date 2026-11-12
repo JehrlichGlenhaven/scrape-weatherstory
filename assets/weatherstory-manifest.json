@@ -1,10 +1,14 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Late Week System Bringing Mainly Rain"
+    "label": "Severe Weather Possible This Afternoon"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Minor Tidal Flooding Expected Thursday Morning"
+    "label": "Late Week System Bringing Mainly Rain"
+  },
+  {
+    "src": "assets/weatherstory-3.png",
+    "label": "Minor Tidal Flooding Expected This Morning"
   }
 ]
