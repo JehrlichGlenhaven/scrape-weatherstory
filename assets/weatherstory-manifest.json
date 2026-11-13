@@ -1,10 +1,14 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Severe Weather Possible This Afternoon"
+    "label": "Damage Surveys Planned for Friday"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Late Week System Bringing Mainly Rain"
+    "label": "Chilly and wet today"
+  },
+  {
+    "src": "assets/weatherstory-3.png",
+    "label": "Tidal Flooding Expected This Morning"
   }
 ]
