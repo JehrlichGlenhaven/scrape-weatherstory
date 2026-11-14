@@ -1,10 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Damage Surveys Planned for Friday"
+    "label": "Today's Forecast"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Chilly and wet today"
+    "label": "Tonight's Forecast"
   }
 ]
