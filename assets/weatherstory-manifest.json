@@ -1,14 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Wednesday's Forecast"
+    "label": "Continuing Sunny and Mild"
   },
   {
     "src": "assets/weatherstory-2.png",
-    "label": "Potential Coastal Low Sunday into Monday??"
-  },
-  {
-    "src": "assets/weatherstory-3.png",
-    "label": "Thanksgiving Week Outlook"
+    "label": "Late Weekend Storm Potential"
   }
 ]
