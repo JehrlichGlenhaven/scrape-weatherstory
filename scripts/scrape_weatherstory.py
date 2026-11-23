@@ -8,29 +8,51 @@ import requests
 import sentry_sdk
 from bs4 import BeautifulSoup
 
+# Keep this init minimal: sentry-sdk 3.0 removed send_default_pii and
+# enable_logs, and an unknown option here raises TypeError before main() runs,
+# which is what broke the scheduled scrape. Only use long-stable options.
 sentry_sdk.init(
     dsn="https://0bbf4139780919b0d9a62b4db137caa0@o4512187179859968.ingest.us.sentry.io/4512203404410880",
-    # Add data like request headers and IP for users,
-    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
-    send_default_pii=True,
-    # Enable sending logs to Sentry
-    enable_logs=True,
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for tracing.
+    # Capture 100% of transactions for tracing and profile all sessions.
     traces_sample_rate=1.0,
-    # Set profile_session_sample_rate to 1.0 to profile 100%
-    # of profile sessions.
     profile_session_sample_rate=1.0,
 )
 
 URL = "https://www.weather.gov/phi/weatherstory"
 OUTPUT_DIR = "assets"
 MANIFEST_FILE = "weatherstory-manifest.json"
+CUSTOM_IMAGES_FILE = "custom-images.json"
+
+# NWS asks API/bot traffic to identify itself, and their CDN intermittently
+# blocks default "python-requests" user agents from cloud IPs (GitHub Actions
+# runners), returning 403. A descriptive UA avoids that.
+HEADERS = {
+    "User-Agent": "(weatherstory-scraper, github.com/JehrlichGlenhaven) python-requests",
+}
+
+
+def load_custom_images() -> list:
+    """Load user-added rotation images from assets/custom-images.json.
+
+    Returns [] when the file is missing or invalid, so a bad edit can never
+    break the scrape.
+    """
+    path = os.path.join(OUTPUT_DIR, CUSTOM_IMAGES_FILE)
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path) as f:
+            images = json.load(f)
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"WARNING: ignoring invalid {path}: {e}", file=sys.stderr)
+        return []
+    print(f"Adding {len(images)} custom image(s) from {path}")
+    return images
 
 
 def download_image(url: str, path: str) -> None:
     """Download an image and save it to the repo."""
-    response = requests.get(url, timeout=30)
+    response = requests.get(url, headers=HEADERS, timeout=30)
     response.raise_for_status()
     with open(path, "wb") as f:
         f.write(response.content)
@@ -82,7 +104,7 @@ def main() -> int:
     os.makedirs(date_dir, exist_ok=True)
 
     print(f"Fetching {URL} ...")
-    response = requests.get(URL, timeout=30)
+    response = requests.get(URL, headers=HEADERS, timeout=30)
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -111,6 +133,9 @@ def main() -> int:
         shutil.copy2(date_filepath, latest_filepath)
 
         manifest.append({"src": f"assets/{filename}", "label": label})
+
+    # Append the user's own pictures so they survive every scraper run
+    manifest.extend(load_custom_images())
 
     # Save manifest in the date-stamped archive folder
     date_manifest_path = os.path.join(date_dir, MANIFEST_FILE)
