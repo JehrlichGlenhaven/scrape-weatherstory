@@ -1,6 +1,10 @@
 [
   {
     "src": "assets/weatherstory-1.png",
-    "label": "Rainfall Totals Sunday/Sunday Night"
+    "label": "Today's Forecast"
+  },
+  {
+    "src": "assets/weatherstory-2.png",
+    "label": "Key Messages for Thanksgiving Coastal Storm"
   }
 ]
