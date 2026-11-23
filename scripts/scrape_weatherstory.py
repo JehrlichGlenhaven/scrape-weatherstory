@@ -112,10 +112,12 @@ def main() -> int:
         tab_images = scrape_tab_images(soup)
     except ValueError as e:
         print(f"ERROR: {e}", file=sys.stderr)
+        sentry_sdk.capture_exception(e)
         return 1
 
     if not tab_images:
         print("ERROR: No Weather Story images found", file=sys.stderr)
+        sentry_sdk.capture_message("No Weather Story images found", level="error")
         return 1
 
     print(f"Found {len(tab_images)} tab image(s):")
